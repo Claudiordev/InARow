@@ -1,6 +1,7 @@
 package com.claudiordese.kafka.service.game;
 
 import com.claudiordese.kafka.model.Room;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -20,5 +21,14 @@ public class RoomStateService {
 
     public void playerJoined(String roomId, String playerId) {
         rooms.get(roomId);
+    }
+
+    @Override
+    public String toString() {
+        try {
+            return new ObjectMapper().writeValueAsString(this);
+        } catch (Exception e) {
+            return "{}";
+        }
     }
 }

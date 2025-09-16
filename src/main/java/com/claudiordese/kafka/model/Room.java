@@ -3,7 +3,6 @@ package com.claudiordese.kafka.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +18,11 @@ public class Room {
     private String status;
     private List<PlayerDTO> playersList = new ArrayList<>();
 
+    /**
+     * Add player to a room
+     * @param player
+     * @return
+     */
     public boolean add(PlayerDTO player) {
         if (players < maxPlayers) {
             playersList.add(player);
@@ -29,6 +33,11 @@ public class Room {
         return false;
     }
 
+    /**
+     * Remove a player
+     * @param player
+     * @return
+     */
     public boolean remove(PlayerDTO player) {
         if (playersList != null && playersList.remove(player)) {
             players--;

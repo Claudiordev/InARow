@@ -2,40 +2,44 @@ package com.claudiordese.kafka.service.rest;
 
 import com.claudiordese.kafka.model.Room;
 import com.claudiordese.kafka.model.RoomsStatus;
+import com.claudiordese.kafka.service.game.RoomStateService;
 import com.claudiordese.kafka.service.kafka.producer.RoomProducer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @RestController
 @RequestMapping("/api/kafka")
 public class Rooms {
 
     private final RoomProducer roomProducer;
+    private final RoomStateService roomStateService;
+    private final Logger logger = LoggerFactory.getLogger(Rooms.class);
 
-    public Rooms(RoomProducer roomProducer) {
+    public Rooms(RoomProducer roomProducer, RoomStateService roomStateService) {
         this.roomProducer = roomProducer;
+        this.roomStateService = roomStateService;
     }
 
-    @PostMapping("/send")
-    public ResponseEntity<String> addRoom(@RequestBody Room room) {
-        RoomsStatus roomStatus = new RoomsStatus();
-        List<Room> list = new ArrayList<>();
-        list.add(room);
+    @PostMapping("/add")
+    public ResponseEntity<String> addRoom() {
+        roomStateService.addRoom(new Room(String.valueOf(Random.)));
+    }
 
-        roomStatus.setRooms(list);
-
-
-
-
-
-
-        roomStatus.setTimestamp(Instant.now().toString());
-        roomProducer.sendMessage(roomStatus);
-
-        return ResponseEntity.ok(roomStatus.toString());
+    @GetMapping("/status")
+    public ResponseEntity<String> getRoomsStatus() {
+        try {
+            return ResponseEntity.ok(new ObjectMapper().writeValueAsString(roomStateService.getAllRooms()));
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return ResponseEntity.ok("{}");
+        }
     }
 }
