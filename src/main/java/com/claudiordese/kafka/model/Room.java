@@ -1,5 +1,6 @@
 package com.claudiordese.kafka.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,11 @@ public class Room {
     private int maxSpectators;
     private String status;
     private List<PlayerDTO> playersList = new ArrayList<>();
+
+    public Room(String roomId, int maxPlayers) {
+        this.roomId = roomId;
+        this.maxPlayers = maxPlayers;
+    }
 
     /**
      * Add player to a room
@@ -45,5 +51,14 @@ public class Room {
         }
 
         return false;
+    }
+
+    @Override
+    public String toString() {
+        try {
+            return new ObjectMapper().writeValueAsString(this);
+        } catch (Exception e) {
+            return "{}";
+        }
     }
 }

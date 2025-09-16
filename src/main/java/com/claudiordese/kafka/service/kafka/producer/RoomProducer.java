@@ -1,6 +1,8 @@
 package com.claudiordese.kafka.service.kafka.producer;
 
+import com.claudiordese.kafka.model.Room;
 import com.claudiordese.kafka.model.RoomsStatus;
+import com.claudiordese.kafka.service.kafka.data.RoomEvent;
 import org.apache.tomcat.util.json.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,17 +19,17 @@ public class RoomProducer {
     private static final Logger logger = LoggerFactory.getLogger(RoomProducer.class);
 
     @Value("${app.kafka.topics.rooms}")
-    private String TOPIC = "rooms";
-    private final KafkaTemplate<String, RoomsStatus> kafkaTemplate;
+    private String TOPIC = "room-events";
+    private final KafkaTemplate<String, RoomEvent> kafkaTemplate;
 
-    public RoomProducer(KafkaTemplate<String, RoomsStatus> kafkaTemplate) {
+    public RoomProducer(KafkaTemplate<String, RoomEvent> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendMessage(RoomsStatus status) {
-        logger.info("Sending message to topic: {} message: {}", TOPIC, status.toString());
+    public void sendMessage(RoomEvent event) {
+        logger.info("Adding event to: {} message: {}", TOPIC, event);
 
-        Message<RoomsStatus> message = MessageBuilder.withPayload(status).setHeader(KafkaHeaders.TOPIC, TOPIC).build();
+        Message<RoomEvent> message = MessageBuilder.withPayload(event).setHeader(KafkaHeaders.TOPIC, TOPIC).build();
 
         kafkaTemplate.send(message);
     }

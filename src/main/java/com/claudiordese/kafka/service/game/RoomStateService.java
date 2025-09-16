@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
@@ -19,8 +20,16 @@ public class RoomStateService {
         return rooms;
     }
 
-    public void playerJoined(String roomId, String playerId) {
-        rooms.get(roomId);
+    /**
+     * Generate a new UUID for a Room
+     * @return String UUID
+     */
+    public String generateUUID() {
+        String id;
+        do {
+            id = UUID.randomUUID().toString();
+        } while (rooms.containsKey(id));
+        return id;
     }
 
     @Override
