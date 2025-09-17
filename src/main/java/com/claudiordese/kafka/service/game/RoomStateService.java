@@ -4,6 +4,8 @@ import com.claudiordese.kafka.model.Room;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,8 +18,8 @@ public class RoomStateService {
         rooms.put(room.getRoomId(), room);
     }
 
-    public Map<String, Room> getAllRooms() {
-        return rooms;
+    public List<Room> getAllRooms() {
+        return new ArrayList<>(rooms.values());
     }
 
     /**

@@ -1,13 +1,15 @@
-package com.claudiordese.kafka.service.rest;
+package com.claudiordese.kafka.layers.rest;
 
-import com.claudiordese.kafka.model.PlayerDTO;
+import com.claudiordese.kafka.model.dto.PlayerDTO;
 import com.claudiordese.kafka.model.Room;
-import com.claudiordese.kafka.model.RoomsStatus;
+import com.claudiordese.kafka.model.entity.Player;
+import com.claudiordese.kafka.model.mapper.PlayerMapper;
+import com.claudiordese.kafka.repository.PlayerRepository;
 import com.claudiordese.kafka.service.game.PlayerRegistry;
 import com.claudiordese.kafka.service.game.RoomStateService;
-import com.claudiordese.kafka.service.kafka.data.RoomEvent;
-import com.claudiordese.kafka.service.kafka.data.RoomEventType;
-import com.claudiordese.kafka.service.kafka.producer.RoomProducer;
+import com.claudiordese.kafka.model.event.RoomEvent;
+import com.claudiordese.kafka.model.enums.RoomEventType;
+import com.claudiordese.kafka.messages.producer.RoomProducer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,33 +17,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
-
 @RestController
-@RequestMapping("/api/kafka")
+@RequestMapping("/api/v1/game")
 public class Rooms {
 
     private final RoomProducer roomProducer;
     private final RoomStateService roomStateService;
     private final PlayerRegistry playerRegistry;
+    private final PlayerRepository playerRepository;
     private final Logger logger = LoggerFactory.getLogger(Rooms.class);
 
-    public Rooms(RoomProducer roomProducer, RoomStateService roomStateService, PlayerRegistry playerRegistry) {
+    public Rooms(RoomProducer roomProducer, RoomStateService roomStateService, PlayerRegistry playerRegistry, PlayerRepository playerRepository) {
         this.roomProducer = roomProducer;
         this.roomStateService = roomStateService;
         this.playerRegistry = playerRegistry;
-    }
-
-    @PostMapping("/login/{username}")
-    public ResponseEntity<PlayerDTO> login(@PathVariable String username) {
-        PlayerDTO playerDTO = new PlayerDTO(new Random().nextLong(), username, 0, 0);
-        playerRegistry.add(playerDTO);
-
-        return ResponseEntity.ok().build();
+        this.playerRepository = playerRepository;
     }
 
     @PostMapping("/add")

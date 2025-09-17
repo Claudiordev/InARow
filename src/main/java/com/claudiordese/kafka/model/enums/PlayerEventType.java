@@ -1,4 +1,4 @@
-package com.claudiordese.kafka.service.kafka.data;
+package com.claudiordese.kafka.model.enums;
 
 public enum PlayerEventType {
     JOIN,

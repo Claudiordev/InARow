@@ -1,16 +1,12 @@
-package com.claudiordese.kafka.service.kafka.producer;
+package com.claudiordese.kafka.messages.producer;
 
-import com.claudiordese.kafka.model.Room;
-import com.claudiordese.kafka.model.RoomsStatus;
-import com.claudiordese.kafka.service.kafka.data.RoomEvent;
-import org.apache.tomcat.util.json.JSONParser;
+import com.claudiordese.kafka.model.event.RoomEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.Message;
-import org.springframework.messaging.support.GenericMessage;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +14,8 @@ import org.springframework.stereotype.Service;
 public class RoomProducer {
     private static final Logger logger = LoggerFactory.getLogger(RoomProducer.class);
 
-    @Value("${app.kafka.topics.rooms}")
-    private String TOPIC = "room-events";
+    @Value("${app.kafka.topics.events.rooms}")
+    private String TOPIC;
     private final KafkaTemplate<String, RoomEvent> kafkaTemplate;
 
     public RoomProducer(KafkaTemplate<String, RoomEvent> kafkaTemplate) {

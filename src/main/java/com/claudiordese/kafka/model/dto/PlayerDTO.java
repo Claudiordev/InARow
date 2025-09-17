@@ -1,15 +1,11 @@
-package com.claudiordese.kafka.model;
+package com.claudiordese.kafka.model.dto;
+
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Data;
 
-import java.util.List;
+import java.util.UUID;
 
-@Data
-@Deprecated
-public class RoomsStatus {
-    private String timestamp;
-    private List<Room> rooms;
+public record PlayerDTO(UUID id, String username, int gamePoints, int score) {
 
     @Override
     public String toString() {

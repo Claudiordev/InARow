@@ -1,6 +1,6 @@
-package com.claudiordese.kafka.service.kafka.producer;
+package com.claudiordese.kafka.messages.producer;
 
-import com.claudiordese.kafka.service.kafka.data.PlayerEvent;
+import com.claudiordese.kafka.model.event.PlayerEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class PlayerEventsProducer {
     private final Logger logger = LoggerFactory.getLogger(PlayerEventsProducer.class);
 
-    @Value("${app.kafka.topics.rooms}")
+    @Value("${app.kafka.topics.events.players}")
     private String TOPIC;
     private final KafkaTemplate<String, PlayerEvent> kafkaTemplate;
 

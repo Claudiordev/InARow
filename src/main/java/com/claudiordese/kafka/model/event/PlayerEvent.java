@@ -1,18 +1,18 @@
-package com.claudiordese.kafka.service.kafka.data;
+package com.claudiordese.kafka.model.event;
 
+import com.claudiordese.kafka.model.dto.PlayerDTO;
 import com.claudiordese.kafka.model.Room;
+import com.claudiordese.kafka.model.enums.PlayerEventType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-public class RoomEvent {
+@AllArgsConstructor
+public class PlayerEvent {
     private Room room;
-    private RoomEventType type;
-
-    public RoomEvent(Room room, RoomEventType type) {
-        this.room = room;
-        this.type = type;
-    }
+    private PlayerDTO playerDTO;
+    private PlayerEventType eventType;
 
     @Override
     public String toString() {

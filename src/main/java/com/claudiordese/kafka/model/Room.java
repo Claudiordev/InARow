@@ -1,5 +1,6 @@
 package com.claudiordese.kafka.model;
 
+import com.claudiordese.kafka.model.dto.PlayerDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
