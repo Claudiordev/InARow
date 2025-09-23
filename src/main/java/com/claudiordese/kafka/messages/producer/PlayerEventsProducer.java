@@ -21,6 +21,18 @@ public class PlayerEventsProducer {
 
     public void sendData(PlayerEvent playerEvent) {
         logger.info("Add data to topic {}, message {}", TOPIC, playerEvent.toString());
-        kafkaTemplate.send(TOPIC, "player", playerEvent);
+        kafkaTemplate.send(TOPIC, "player", playerEvent).whenComplete(
+                (result, error) -> {
+                    if (error != null) logger.error("Error saving data to topic {}, error: {}", TOPIC, error.getMessage());
+
+                    else {
+                        logger.info("Send message: {}, to topic {}, partition {}, offset {}",
+                                TOPIC,
+                                playerEvent,
+                                result.getRecordMetadata().partition(),
+                                result.getRecordMetadata().offset());
+                    }
+                }
+        );
     }
 }

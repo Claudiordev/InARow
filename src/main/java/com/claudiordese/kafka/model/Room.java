@@ -19,6 +19,7 @@ public class Room {
     private int maxSpectators;
     private String status;
     private List<PlayerDTO> playersList = new ArrayList<>();
+    private char[][] board;
 
     public Room(String roomId, int maxPlayers) {
         this.roomId = roomId;

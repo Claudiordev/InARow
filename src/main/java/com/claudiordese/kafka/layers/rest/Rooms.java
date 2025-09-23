@@ -23,21 +23,17 @@ public class Rooms {
 
     private final RoomProducer roomProducer;
     private final RoomStateService roomStateService;
-    private final PlayerRegistry playerRegistry;
-    private final PlayerRepository playerRepository;
     private final Logger logger = LoggerFactory.getLogger(Rooms.class);
 
     public Rooms(RoomProducer roomProducer, RoomStateService roomStateService, PlayerRegistry playerRegistry, PlayerRepository playerRepository) {
         this.roomProducer = roomProducer;
         this.roomStateService = roomStateService;
-        this.playerRegistry = playerRegistry;
-        this.playerRepository = playerRepository;
     }
 
     @PostMapping("/add")
     public ResponseEntity<String> addRoom() {
         try {
-            Room room = new Room(roomStateService.generateUUID(),5);
+            Room room = new Room(roomStateService.generateUUID(),2);
             roomStateService.addRoom(room);
 
             roomProducer.sendMessage(new RoomEvent(room, RoomEventType.CREATE));
