@@ -12,7 +12,7 @@ public class MessagesProducer {
     private final Logger logger = LoggerFactory.getLogger(MessagesProducer.class);
 
     @Value ("${app.kafka.topics.events.messages}")
-    private final String TOPIC = "global-events";
+    private String TOPIC = "global-events";
     private final KafkaTemplate<String, Message> kafkaTemplate;
 
     public MessagesProducer(KafkaTemplate<String, Message> kafkaTemplate) {

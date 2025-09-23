@@ -1,15 +1,20 @@
 package com.claudiordese.kafka.model.entity;
 
+import com.claudiordese.kafka.global.JSONSerializer;
 import com.claudiordese.kafka.model.dto.PlayerDTO;
 import com.claudiordese.kafka.service.game.PlayerRegistry;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+
 @Data
-public class GameRoom {
+@EqualsAndHashCode(callSuper = false)
+public class GameRoom extends JSONSerializer {
     private UUID uuid;
     private String name;
     private List<PlayerDTO> players;
@@ -58,10 +63,48 @@ public class GameRoom {
         return true;
     }
 
-    public void detectWinner() {
+    public boolean detectWinner(Move move) {
+        char symbol = move.getSymbol();
+
         for (int y = 0; y < this.board.length; y++) {
-            for (int x = 0; x < this.board[y].length; x++) {
+            if (board[y][0] == symbol && board[y][1] == symbol && board[y][2] == symbol) {
+                return true;
             }
         }
+
+        for (int x = 0; x < this.board.length; x++) {
+            if (board[0][x] == symbol && board[1][x] == symbol && board[2][x] == symbol) {
+                return true;
+            }
+        }
+
+        if (board[0][0] == symbol && board[1][1] == symbol && board[2][2] == symbol) {
+            return true;
+        }
+
+        if (board[0][2] == symbol && board[1][1] == symbol && board[2][0] == symbol) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public String boardToString() {
+        StringBuilder sb = new StringBuilder();
+
+        for (int y = 0; y < board.length; y++) {
+            for (int x = 0; x < board[y].length; x++) {
+                sb.append(board[y][x]);
+                if (x < board[y].length - 1) {
+                    sb.append(" | "); // separator between cells
+                }
+            }
+            sb.append("\n");
+            if (y < board.length - 1) {
+                sb.append("--+---+--\n"); // separator between rows
+            }
+        }
+
+        return sb.toString();
     }
 }
