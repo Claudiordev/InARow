@@ -4,5 +4,8 @@ public enum PlayerEventType {
     JOIN,
     LEAVE,
     LOGIN,
-    LOGOUT
+    LOGOUT,
+    ALREADY_LOGGED_IN,
+    UNAUTHORIZED,
+    ERROR
 }

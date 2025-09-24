@@ -1,7 +1,7 @@
 package com.claudiordese.kafka.model.event;
 
+import com.claudiordese.kafka.model.domain.GameRoom;
 import com.claudiordese.kafka.model.dto.PlayerDTO;
-import com.claudiordese.kafka.model.Room;
 import com.claudiordese.kafka.model.enums.PlayerEventType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class PlayerEvent {
-    private Room room;
+    private GameRoom room;
     private PlayerDTO playerDTO;
     private PlayerEventType eventType;
 

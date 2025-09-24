@@ -1,4 +1,4 @@
-package com.claudiordese.kafka.model.entity;
+package com.claudiordese.kafka.model.domain;
 
 import com.claudiordese.kafka.global.JSONSerializer;
 import com.claudiordese.kafka.model.dto.PlayerDTO;
@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,6 +36,11 @@ public class GameRoom extends JSONSerializer {
         }
     }
 
+    /**
+     * Do a move on the board
+     * @param move
+     * @return
+     */
     public boolean move(Move move) {
         char symbol = move.getSymbol();
         int y = move.getY();
@@ -60,9 +64,19 @@ public class GameRoom extends JSONSerializer {
 
         board[y][x] = symbol;
         moves.add(move);
+
+        if (detectWinner(move)) {
+            winner = move.getPlayer();
+        }
+
         return true;
     }
 
+    /**
+     * Detect if there's a winner on the game
+     * @param move
+     * @return
+     */
     public boolean detectWinner(Move move) {
         char symbol = move.getSymbol();
 
@@ -89,6 +103,10 @@ public class GameRoom extends JSONSerializer {
         return false;
     }
 
+    /**
+     * Print board
+     * @return
+     */
     public String boardToString() {
         StringBuilder sb = new StringBuilder();
 

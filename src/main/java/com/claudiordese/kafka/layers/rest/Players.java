@@ -4,6 +4,7 @@ import com.claudiordese.kafka.exceptions.LoggedInException;
 import com.claudiordese.kafka.messages.producer.PlayerEventsProducer;
 import com.claudiordese.kafka.model.dto.PlayerDTO;
 import com.claudiordese.kafka.model.entity.Player;
+import com.claudiordese.kafka.model.enums.PlayerEventType;
 import com.claudiordese.kafka.model.event.PlayerEvent;
 import com.claudiordese.kafka.model.mapper.PlayerMapper;
 import com.claudiordese.kafka.repository.PlayerRepository;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/players")
@@ -49,11 +51,12 @@ public class Players {
             PlayerDTO playerDTO = PlayerMapper.toPlayerDTO(player);
 
             if (playerRegistry.isLoggedIn(playerDTO.id())) {
+                playerEventsProducer.sendData(new PlayerEvent(null,playerDTO, PlayerEventType.ALREADY_LOGGED_IN));
                 throw new LoggedInException(username);
             }
 
             playerRegistry.add(playerDTO);
-
+            playerEventsProducer.sendData(new PlayerEvent(null,playerDTO, PlayerEventType.LOGIN));
             return new ResponseEntity<>(playerDTO.toString(), HttpStatus.OK);
         } catch (LoggedInException loggedInException) {
             logger.warn(loggedInException.getMessage());
@@ -62,6 +65,7 @@ public class Players {
         } catch (Exception e) {
             logger.error("Error logging in for {} , message: {}", username, e.getMessage());
 
+            playerEventsProducer.sendData(new PlayerEvent(null, new PlayerDTO(UUID.fromString("" + 0), username, 0, 0), PlayerEventType.ERROR));
             return new ResponseEntity<>("Error logging in", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -69,5 +73,21 @@ public class Players {
     @GetMapping("/loggedIn")
     public ResponseEntity<List<PlayerDTO>> getLoggedInPlayers() {
         return new ResponseEntity<>(playerRegistry.getLoggedInPlayers(), HttpStatus.OK);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<PlayerDTO> updatePlayer(@RequestBody PlayerDTO playerDTO, @RequestParam String newUsername) {
+        if (playerRegistry.isLoggedIn(playerDTO.id())) {
+            return playerRepository.findByUsername(playerDTO.username()).map(
+                    player -> {
+                        player.setUsername(newUsername);
+                        playerRepository.save(player);
+
+                        return new ResponseEntity<>(PlayerMapper.toPlayerDTO(player), HttpStatus.OK);
+                    })
+                    .orElseGet(() -> new ResponseEntity<>(playerDTO, HttpStatus.NOT_FOUND));
+        } else {
+            return new ResponseEntity<>(playerDTO, HttpStatus.UNAUTHORIZED);
+        }
     }
 }

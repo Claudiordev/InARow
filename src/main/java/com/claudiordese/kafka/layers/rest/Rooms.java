@@ -18,7 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/game")
+@RequestMapping("/api/v1/room")
 public class Rooms {
 
     private final RoomProducer roomProducer;

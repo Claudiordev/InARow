@@ -2,9 +2,9 @@ package com.claudiordese.kafka.layers.socket;
 
 import com.claudiordese.kafka.messages.producer.MessagesProducer;
 import com.claudiordese.kafka.model.dto.PlayerDTO;
-import com.claudiordese.kafka.model.entity.GameRoom;
-import com.claudiordese.kafka.model.entity.Message;
-import com.claudiordese.kafka.model.entity.Move;
+import com.claudiordese.kafka.model.domain.GameRoom;
+import com.claudiordese.kafka.model.domain.Message;
+import com.claudiordese.kafka.model.domain.Move;
 import com.claudiordese.kafka.service.game.PlayerRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

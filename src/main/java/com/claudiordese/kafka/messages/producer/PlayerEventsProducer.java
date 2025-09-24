@@ -26,7 +26,7 @@ public class PlayerEventsProducer {
                     if (error != null) logger.error("Error saving data to topic {}, error: {}", TOPIC, error.getMessage());
 
                     else {
-                        logger.info("Send message: {}, to topic {}, partition {}, offset {}",
+                        logger.info("Send data: {}, to topic {}, partition {}, offset {}",
                                 TOPIC,
                                 playerEvent,
                                 result.getRecordMetadata().partition(),
