@@ -1,5 +1,10 @@
+CREATE DATABASE IF NOT EXISTS `inarow`;
+
+USE `inarow`;
 -- Enable the pgcrypto extension for UUID generation
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+
+
 
 CREATE TABLE players (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -9,6 +14,13 @@ CREATE TABLE players (
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
 );
+
+CREATE TABLE moves (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    player_id UUID NOT NULL
+
+    CONSTRAINT fk_player FOREIGN KEY (player_id) references players(id)
+)
 
 /*CREATE TABLE game_rooms (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

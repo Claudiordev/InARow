@@ -21,6 +21,7 @@ public class MessagesProducer {
 
     public void sendDataAsync(Message message) {
         kafkaTemplate.send(TOPIC, message).whenComplete((result, error) -> {
+           logger.info("Sending message to Topic {} offset {}, partition {}", TOPIC, result.getRecordMetadata().offset(), result.getRecordMetadata().partition());
            if (error != null) {
                logger.error("Error sending message to topic {}, error {}", TOPIC, error.getMessage());
            }

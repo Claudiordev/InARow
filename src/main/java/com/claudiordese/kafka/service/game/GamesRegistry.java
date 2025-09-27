@@ -1,8 +1,11 @@
 package com.claudiordese.kafka.service.game;
 
+import com.claudiordese.kafka.global.JSONSerializer;
 import com.claudiordese.kafka.model.domain.GameRoom;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -17,5 +20,9 @@ public class GamesRegistry {
 
     public GameRoom getGameRoom(UUID uuid) throws NullPointerException{
         return gameRooms.get(uuid);
+    }
+
+    public List<GameRoom> getGameRooms() {
+        return new ArrayList<>(gameRooms.values());
     }
 }

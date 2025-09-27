@@ -2,7 +2,6 @@ package com.claudiordese.kafka.model.domain;
 
 import com.claudiordese.kafka.global.JSONSerializer;
 import com.claudiordese.kafka.model.dto.PlayerDTO;
-import com.claudiordese.kafka.service.game.PlayerRegistry;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -19,15 +18,13 @@ public class GameRoom extends JSONSerializer {
     private List<PlayerDTO> players;
     private char[][] board = new char[3][3];
     private List<Move> moves;
-    private PlayerRegistry playerRegistry;
     private PlayerDTO winner = null;
 
-    public GameRoom(String name, PlayerRegistry playerRegistry) {
+    public GameRoom(String name) {
         this.uuid = UUID.randomUUID();
         this.name = name;
         this.players = new ArrayList<>();
         this.moves = new ArrayList<>();
-        this.playerRegistry = playerRegistry;
 
         for(int y = 0; y < 3; y++) {
             for(int x = 0; x < 3; x++) {
@@ -47,10 +44,6 @@ public class GameRoom extends JSONSerializer {
         int x = move.getX();
 
         if (winner != null) {
-            return false;
-        }
-
-        if (!playerRegistry.isLoggedIn(move.getPlayer().id())) {
             return false;
         }
 
