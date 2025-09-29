@@ -10,11 +10,14 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 
 import java.util.UUID;
 
 @Controller
+@EnableScheduling
 public class Games {
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final GamesRegistry gamesRegistry;
@@ -42,5 +45,10 @@ public class Games {
         } catch (NullPointerException nullPointerException) {
             simpMessagingTemplate.convertAndSend("/topic/game/" + gameRoomId + "/play", "ERROR");
         }
+    }
+
+    @Scheduled(fixedRate = 5000)
+    public void print() {
+        logger.info("Games is running");
     }
 }

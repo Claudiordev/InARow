@@ -65,7 +65,7 @@ public class Players {
         } catch (Exception e) {
             logger.error("Error logging in for {} , message: {}", username, e.getMessage());
 
-            playerEventsProducer.sendData(new PlayerEvent(null, new PlayerDTO(UUID.fromString("" + 0), username, 0, 0), PlayerEventType.ERROR));
+            playerEventsProducer.sendData(new PlayerEvent(null, new PlayerDTO(UUID.fromString("" + 0), username, null, 0, 0), PlayerEventType.ERROR));
             return new ResponseEntity<>("Error logging in", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

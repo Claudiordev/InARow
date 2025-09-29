@@ -10,7 +10,7 @@ public class PlayerMapper {
         return new PlayerDTO(
                 player.getId(),
                 player.getUsername(),
-                player.getGamePoints(),
+                null, player.getGamePoints(),
                 player.getScore());
     }
 }

@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -28,6 +29,9 @@ public class Player {
     @ColumnDefault("0")
     @Column(name = "score", nullable = false)
     private Integer score;
+
+    @OneToMany(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MoveEntity> moveList;
 
     @ColumnDefault("now()")
     @Column(name = "created_at")
