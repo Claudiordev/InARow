@@ -1,15 +1,12 @@
 package com.claudiordese.kafka.layers.rest;
 
-import com.claudiordese.kafka.model.dto.PlayerDTO;
-import com.claudiordese.kafka.model.Room;
-import com.claudiordese.kafka.model.entity.Player;
-import com.claudiordese.kafka.model.mapper.PlayerMapper;
+import com.claudiordese.kafka.old.Room;
 import com.claudiordese.kafka.repository.PlayerRepository;
 import com.claudiordese.kafka.service.game.PlayerRegistry;
 import com.claudiordese.kafka.service.game.RoomStateService;
-import com.claudiordese.kafka.model.event.RoomEvent;
-import com.claudiordese.kafka.model.enums.RoomEventType;
-import com.claudiordese.kafka.messages.producer.RoomProducer;
+import com.claudiordese.kafka.old.RoomEvent;
+import com.claudiordese.kafka.old.RoomEventType;
+import com.claudiordese.kafka.old.RoomProducer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

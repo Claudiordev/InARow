@@ -1,15 +1,17 @@
-package com.claudiordese.kafka.model;
+package com.claudiordese.kafka.old;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
-@Deprecated
-public class RoomsStatus {
-    private String timestamp;
-    private List<Room> rooms;
+public class RoomEvent {
+    private Room room;
+    private RoomEventType type;
+
+    public RoomEvent(Room room, RoomEventType type) {
+        this.room = room;
+        this.type = type;
+    }
 
     @Override
     public String toString() {

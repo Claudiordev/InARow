@@ -1,4 +1,4 @@
-package com.claudiordese.kafka.model;
+package com.claudiordese.kafka.old;
 
 import com.claudiordese.kafka.model.dto.PlayerDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;

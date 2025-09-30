@@ -1,6 +1,5 @@
-package com.claudiordese.kafka.messages.producer;
+package com.claudiordese.kafka.old;
 
-import com.claudiordese.kafka.model.event.RoomEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

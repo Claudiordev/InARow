@@ -1,4 +1,4 @@
-package com.claudiordese.kafka.model.enums;
+package com.claudiordese.kafka.old;
 
 public enum RoomEventType {
     CREATE,

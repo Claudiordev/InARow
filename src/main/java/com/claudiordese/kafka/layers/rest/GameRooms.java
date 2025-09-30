@@ -8,7 +8,6 @@ import com.claudiordese.kafka.service.game.PlayerRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -30,7 +29,7 @@ public class GameRooms {
     }
 
 
-    @PostMapping("/addRoom")
+    @PostMapping("/rooms")
     public ResponseEntity<String> addRom(@RequestParam String name) {
         GameRoom gameRoom = new GameRoom(name);
 
@@ -39,17 +38,17 @@ public class GameRooms {
         return new  ResponseEntity<>(gameRoom.toString(), HttpStatus.OK);
     }
 
-    @GetMapping("/gameRooms")
+    @GetMapping("/rooms")
     public ResponseEntity<?> getGames() {
         return new ResponseEntity<>(gameRegistry.getGameRooms(),HttpStatus.OK);
     }
 
-    @GetMapping("/getMoves/{player_id}")
+    @GetMapping("/moves/{player_id}")
     public ResponseEntity<?> getMoves(@PathVariable String player_id) {
         return new ResponseEntity<>(playerRegistry.getMovesByPlayer(UUID.fromString(player_id)), HttpStatus.OK);
     }
 
-    @DeleteMapping("/move/{move_id}")
+    @DeleteMapping("/moves/{move_id}")
     public ResponseEntity<String> deleteMoves(@PathVariable String move_id) {
         return new ResponseEntity<>("Deleted", HttpStatus.OK);
     }

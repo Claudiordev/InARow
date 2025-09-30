@@ -1,6 +1,6 @@
 package com.claudiordese.kafka.service.game;
 
-import com.claudiordese.kafka.model.Room;
+import com.claudiordese.kafka.old.Room;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 

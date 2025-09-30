@@ -1,6 +1,6 @@
 package com.claudiordese.kafka.messages.configurations;
 
-import com.claudiordese.kafka.model.RoomsStatus;
+import com.claudiordese.kafka.old.RoomsStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
