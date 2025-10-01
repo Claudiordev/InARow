@@ -2,6 +2,7 @@ package com.claudiordese.kafka.model.mapper;
 
 import com.claudiordese.kafka.model.dto.PlayerDTO;
 import com.claudiordese.kafka.model.entity.Player;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class PlayerMapper {
 

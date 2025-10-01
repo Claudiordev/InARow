@@ -47,7 +47,7 @@ public class Games {
         }
     }
 
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 555555)
     public void print() {
         logger.info("Games is running");
     }

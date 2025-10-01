@@ -34,42 +34,6 @@ public class Players {
         this.playerEventsProducer = playerEventsProducer;
     }
 
-    @GetMapping("/login")
-    public ResponseEntity<String> login(@RequestParam String username) {
-        try {
-            Player player = playerRepository.findByUsername(username).orElseGet(() -> {
-                Player newPlayer = new Player();
-                newPlayer.setUsername(username);
-                newPlayer.setGamePoints(0);
-                newPlayer.setScore(0);
-                newPlayer.setCreatedAt(Instant.now());
-                newPlayer.setUpdatedAt(Instant.now());
-
-                return playerRepository.save(newPlayer);
-            });
-
-            PlayerDTO playerDTO = PlayerMapper.toPlayerDTO(player);
-
-            if (playerRegistry.isLoggedIn(playerDTO.id())) {
-                playerEventsProducer.sendData(new PlayerEvent(null,playerDTO, PlayerEventType.ALREADY_LOGGED_IN));
-                throw new LoggedInException(username);
-            }
-
-            playerRegistry.add(playerDTO);
-            playerEventsProducer.sendData(new PlayerEvent(null,playerDTO, PlayerEventType.LOGIN));
-            return new ResponseEntity<>(playerDTO.toString(), HttpStatus.OK);
-        } catch (LoggedInException loggedInException) {
-            logger.warn(loggedInException.getMessage());
-
-            return new ResponseEntity<>(loggedInException.getMessage(), HttpStatus.UNAUTHORIZED);
-        } catch (Exception e) {
-            logger.error("Error logging in for {} , message: {}", username, e.getMessage());
-
-            playerEventsProducer.sendData(new PlayerEvent(null, new PlayerDTO(UUID.fromString("" + 0), username, null, 0, 0), PlayerEventType.ERROR));
-            return new ResponseEntity<>("Error logging in", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
     @GetMapping("/loggedIn")
     public ResponseEntity<List<PlayerDTO>> getLoggedInPlayers() {
         return new ResponseEntity<>(playerRegistry.getLoggedInPlayers(), HttpStatus.OK);
