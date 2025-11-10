@@ -2,7 +2,6 @@ package com.claudiordese.kafka.messages.configurations;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,36 +15,38 @@ import javax.sql.DataSource;
 @Configuration
 public class Security {
 
+    /**
+     * Set the User Role Database structure from Spring Security
+     * @param dataSource DataSource database of the program
+     * @return UserDetailsManager object, responsible for creating, deleting and updating users
+     */
     @Bean
-    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+    public UserDetailsManager userDetailsManager(DataSource dataSource) {
+        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager();
 
-        http.authorizeHttpRequests(configurer ->
-                configurer
-                        .requestMatchers(HttpMethod.GET, "/api/v1/game/rooms").hasRole("ADMIN")
-                        .requestMatchers("/api/v2/auth/**").permitAll()
-                        .requestMatchers("/api/v1/players/**").authenticated());
+        jdbcUserDetailsManager.setDataSource(dataSource);
 
-        http.csrf(httpSecurityCsrfConfigurer ->  httpSecurityCsrfConfigurer.disable());
+        jdbcUserDetailsManager.setUsersByUsernameQuery("SELECT username, password, enabled FROM players WHERE username = ?");
 
-        return http.build();
+        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery("SELECT username, role FROM roles WHERE username = ?");
+
+        return jdbcUserDetailsManager;
     }
 
     @Bean
-    public UserDetailsManager userDetailsManager(DataSource dataSource) {
-        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.httpBasic(Customizer.withDefaults());
 
-        jdbcUserDetailsManager
-                .setUsersByUsernameQuery("select username, password, enabled from players where username=?");
+        http.authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                .requestMatchers("/api/v2/auth/login").permitAll()
+                .anyRequest().authenticated());
 
-        jdbcUserDetailsManager
-                .setAuthoritiesByUsernameQuery("select username, role from roles where username=?");
-
-        return new JdbcUserDetailsManager(dataSource);
+        http.csrf(csrf -> csrf.disable());
+        return http.build();
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }

@@ -1,4 +1,4 @@
-package com.claudiordese.kafka.model.entity;
+package com.claudiordese.kafka.old;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

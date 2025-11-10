@@ -1,6 +1,8 @@
 package com.claudiordese.kafka.model.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "roles", schema = "public", uniqueConstraints = {
@@ -8,6 +10,18 @@ import jakarta.persistence.*;
 })
 public class Role {
 
-    @EmbeddedId
-    private RoleId id;
+    @Setter
+    @ManyToOne
+    @JoinColumn(name = "username", referencedColumnName = "username", nullable = false)
+    private Player player;
+
+    @Setter
+    @Column(name = "role")
+    private String role;
+
+    @Setter
+    @Getter
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 }
